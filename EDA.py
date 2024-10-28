@@ -51,6 +51,29 @@ print("====================================")
 print("Are there duplicate rows?")
 print(data_train.duplicated())
 print("====================================")
+print("Min/Max date of training data")
+# Convert the column to datetime
+data_train['trans_date_trans_time'] = pd.to_datetime(data_train['trans_date_trans_time'])
+
+# Get the minimum and maximum dates
+min_date = data_train['trans_date_trans_time'].min()
+max_date = data_train['trans_date_trans_time'].max()
+
+print(f"Minimum date: {min_date}")
+print(f"Maximum date: {max_date}")
+print("====================================")
+print("Min/Max date of test data")
+# Convert the column to datetime
+data_test['trans_date_trans_time'] = pd.to_datetime(data_test['trans_date_trans_time'])
+
+# Get the minimum and maximum dates
+min_date = data_test['trans_date_trans_time'].min()
+max_date = data_test['trans_date_trans_time'].max()
+
+print(f"Minimum date: {min_date}")
+print(f"Maximum date: {max_date}")
+print("====================================")
+
 
 
 # After EDA, we have the following notes:
