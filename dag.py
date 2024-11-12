@@ -5,6 +5,8 @@ from airflow.utils.dates import days_ago
 from datetime import datetime
 from batch_ingest import ingest_data
 from transform import transform_data
+from featureExtraction import feature_extract
+from build_train_model import build_train
 
 default_args = {
     'owner': 'airflow',
@@ -48,4 +50,10 @@ model_etl = PythonOperator(
    dag=dag,
 )
 
-ingest_etl >> transform_etl >> feature_etl >> model_etl
+load_db = PythonOperator(
+    task_id='push_to_db',
+    python_callable=load_data,
+    dag=dag,
+)
+
+ingest_etl >> transform_etl >> feature_etl >> model_etl >> load_db
