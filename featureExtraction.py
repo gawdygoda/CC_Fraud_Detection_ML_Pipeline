@@ -13,7 +13,7 @@ def feature_extract():
 
     #Local Test section
     # data_path = './data/'
-    # train_df = np.load(data_path+ 'clean_data_train.pkl', allow_pickle=True)
+    # train_df = np.load(data_path + 'clean_data_train.pkl', allow_pickle=True)
     # test_df = np.load(data_path + 'clean_data_test.pkl', allow_pickle=True)
 
     s3 = S3FileSystem()
