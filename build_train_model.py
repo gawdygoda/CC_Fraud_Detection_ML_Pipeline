@@ -36,23 +36,21 @@ def build_train():
 
     # y_pred = model.predict(X_test)
     # accuracy = accuracy_score(y_test, y_pred)
-    # conf_matrix = confusion_matrix(y_test, y_pred)
+    # confusionMatrix = confusion_matrix(y_test, y_pred)
     #
     # print("Accuracy:", accuracy)
-    # print("Confusion Matrix:\n", conf_matrix)
     #
     # # Plotting confusion matrix
-    # plt.figure(figsize=(4, 4))
-    # sns.heatmap(conf_matrix, annot=True, fmt="d", cmap="Blues", cbar=False,
-    #             annot_kws={"fontsize": 14}, linewidths=0.5, linecolor="black")
-    # plt.title("Confusion Matrix", fontsize=16)
-    # plt.xlabel("Predicted Labels", fontsize=14)
-    # plt.ylabel("True Labels", fontsize=14)
-    # plt.xticks(ticks=[0.5, 1.5], labels=["Not Fraud", "Fraud"], fontsize=12)
-    # plt.yticks(ticks=[0.5, 1.5], labels=["Not Fraud", "Fraud"], fontsize=12)
+    # plt.figure(figsize=(5, 5))
+    # sns.heatmap(confusionMatrix, annot=True, annot_kws={"fontsize": 12}, fmt="d", cmap="Blues", cbar=False, linewidths=0.5, linecolor="black")
+    # plt.title("Credit Card Fraud Confusion Matrix", fontsize=14)
+    # plt.xlabel("Predicted", fontsize=14)
+    # plt.ylabel("Actual", fontsize=14)
+    # plt.xticks(ticks=[0.5, 1.5], labels=["Not Fraud", "Fraud"], fontsize=10)
+    # plt.yticks(ticks=[0.5, 1.5], labels=["Not Fraud", "Fraud"], fontsize=10)
     # plt.show()
     #
-    # # Save model temporarily
+    # # Save model
     # model.save_model(f"{data_path}model.json")
 
 
