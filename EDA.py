@@ -74,6 +74,14 @@ print(f"Minimum date: {min_date}")
 print(f"Maximum date: {max_date}")
 print("====================================")
 
+print("Unique categories:")
+
+unique_category_train = data_train['category'].unique()
+unique_category_test = data_test['category'].unique()
+
+print("Unique categories - Train:", unique_category_train)
+print("Unique categories - Test:", unique_category_test)
+print("====================================")
 
 
 # After EDA, we have the following notes:

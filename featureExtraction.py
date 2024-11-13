@@ -19,6 +19,10 @@ def feature_extract():
     s3 = S3FileSystem()
     # S3 bucket directory (data warehouse)
     DIR_wh = 's3://ece5984-s3-pgoda/Project/transformed'                                  # Insert here
+    DIR_model = 's3://ece5984-s3-pgoda/Project/model'                           # Insert here
+    DIR_feature = 's3://ece5984-s3-pgoda/Project/features'                               # Insert here
+
+
     # Get data from S3 bucket as a pickle file
     train_df = np.load(s3.open('{}/{}'.format(DIR_wh, 'clean_data_train.pkl')), allow_pickle=True)
     test_df = np.load(s3.open('{}/{}'.format(DIR_wh, 'clean_data_test.pkl')), allow_pickle=True)
@@ -41,11 +45,14 @@ def feature_extract():
     train_df[features_scalers] = scaler.fit_transform(train_df[features_scalers])
     test_df[features_scalers] = scaler.fit_transform(test_df[features_scalers])
 
+
     # Initialize the LabelEncoder
-    encoder = LabelEncoder()
-    # Encode the text columns for the train and test datasets
-    train_df[features_labels] = train_df[features_labels].apply(encoder.fit_transform)
-    test_df[features_labels] = test_df[features_labels].apply(encoder.fit_transform)
+    encoder_dict = {}
+    for feature in features_labels:
+        encoder = LabelEncoder()
+        train_df[feature] = encoder.fit_transform(train_df[feature])
+        test_df[feature] = encoder.fit_transform(test_df[feature])
+        encoder_dict[feature] = encoder
 
     feature_transform_train = pd.DataFrame(columns=features, data=train_df, index=train_df.index)
     feature_transform_test = pd.DataFrame(columns=features, data=test_df, index=test_df.index)
@@ -56,15 +63,17 @@ def feature_extract():
 
 
     # Push extracted features to data warehouse
-    DIR_aapl = 's3://ece5984-s3-pgoda/Project/features'                               # Insert here
-    with s3.open('{}/{}'.format(DIR_aapl, 'x_train.pkl'), 'wb') as f:
+    with s3.open('{}/{}'.format(DIR_feature, 'x_train.pkl'), 'wb') as f:
         f.write(pickle.dumps(feature_transform_train))
-    with s3.open('{}/{}'.format(DIR_aapl, 'x_test.pkl'), 'wb') as f:
+    with s3.open('{}/{}'.format(DIR_feature, 'x_test.pkl'), 'wb') as f:
         f.write(pickle.dumps(feature_transform_test))
-    with s3.open('{}/{}'.format(DIR_aapl, 'y_train.pkl'), 'wb') as f:
+    with s3.open('{}/{}'.format(DIR_feature, 'y_train.pkl'), 'wb') as f:
         f.write(pickle.dumps(target_train))
-    with s3.open('{}/{}'.format(DIR_aapl, 'y_test.pkl'), 'wb') as f:
+    with s3.open('{}/{}'.format(DIR_feature, 'y_test.pkl'), 'wb') as f:
         f.write(pickle.dumps(target_test))
+    # Save the encoder to a file
+    with s3.open('{}/{}'.format(DIR_model, 'encoder.pkl'), 'wb') as f:
+        f.write(pickle.dumps(encoder_dict))
 
 #Local Test section
 #feature_extract()
