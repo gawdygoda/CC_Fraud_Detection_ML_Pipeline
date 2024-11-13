@@ -35,11 +35,12 @@ def feature_extract():
     #print(target_test)
 
     # Selecting the Features
+    features_unmodified = ['Row Number'] # Column to relate prediction data back to original test data
     features_scalers = ['cc_num', 'amt', 'unix_time']
     features_labels = ['merchant', 'category', 'gender']
-    features = features_scalers + features_labels
+    features = features_scalers + features_labels + features_unmodified
 
-    # feature preprossing on the dataset
+    # feature preprocessing on the dataset
     # Scaling the dataframe
     scaler = MinMaxScaler()
     train_df[features_scalers] = scaler.fit_transform(train_df[features_scalers])

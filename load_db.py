@@ -7,10 +7,12 @@ from s3fs.core import S3FileSystem
 def load_data():
     s3 = S3FileSystem()
     # S3 bucket directory (data warehouse)
+    DIR_wh = 's3://ece5984-s3-pgoda/Project/transformed'                            # Insert here
     DIR_prediction = 's3://ece5984-s3-pgoda/Project/prediction'                     # Insert here
 
     # Get data from S3 bucket as pickle files
     predictions_df = np.load(s3.open(f"{DIR_prediction}/X_test_WithPrediction.pkl"), allow_pickle=True)
+    test_df = np.load(s3.open('{}/{}'.format(DIR_wh, 'clean_data_test.pkl')), allow_pickle=True)
 
 
     # Create sqlalchemy engine to connect to MySQL
@@ -32,7 +34,10 @@ def load_data():
     # Reconnect to the specific database
     engine = create_engine(f"mysql+pymysql://{user}:{pw}@{endpnt}/{db_name}")
 
-    # Insert DataFrames into MySQL DB
+    # Insert Test DataFrames into MySQL DB
+    test_df.to_sql('CCFraudTest', con=engine, if_exists='replace', chunksize=1000)
+
+    # Insert Prediciton DataFrames into MySQL DB
     predictions_df.to_sql('CCFraudPredictions', con=engine, if_exists='replace', chunksize=1000)
 
 

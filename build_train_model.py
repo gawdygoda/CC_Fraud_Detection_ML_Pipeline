@@ -8,7 +8,7 @@ from xgboost import XGBClassifier
 
 # # Local Test section
 # import matplotlib.pyplot as plt
-# from sklearn.metrics import accuracy_score, confusion_matrix
+# from sklearn.metrics import accuracy_score, confusion_matrix, roc_auc_score
 # import seaborn as sns
 
 def build_train():
@@ -46,6 +46,8 @@ def build_train():
     # confusionMatrix = confusion_matrix(y_test, prediction)
     #
     # print("Accuracy:", accuracy)
+    # auc_roc = roc_auc_score(y_test, prediction)
+    # print("AUC-ROC:", auc_roc)
     #
     # # Plotting confusion matrix
     # plt.figure(figsize=(5, 5))
@@ -70,7 +72,7 @@ def build_train():
         encoder = encoder_dict[feature]
         X_test_WithPredictions_df[feature] = encoder.inverse_transform(X_test_WithPredictions_df[feature])
 
-    # # Local Test section
+    # Local Test section
     # print(X_test_WithPredictions_df.shape)
     # print(X_test_WithPredictions_df)
     # Save model
