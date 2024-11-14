@@ -73,6 +73,7 @@ Then simply copy the contents of this repo to your airflow/dags folder, and run 
 The time-series data were Jan 1 2019 – June 21 2020 and June 21 2020 – Dec 31 2020 for the train and test datasets respectively, so there is no need for splitting the dataset for our ML model. The only transformation needed is to add the column name to the first column, Row Number, as it is used to relate the test data back to the prediction. During feature extraction, I chose to use the credit card number, amount and time as scalars, converted to be between 0 and 1 for training efficiency. I choose the merchant, category and gender columns, encoded to an enum as well.
 
 The XGBoost model was trained and resulted in a 99.25% accuracy but a 67.50% AUC-ROC score. The confusion matrix for the test dataset is shown below.
+
 ![Confusion-Matrix](AnalysisResults/CCFraudConfusionMatrix.png)
 
 The AUC-ROC score and confusion matrix show that this model, while highly accurate has a significant number of false negatives and an even higher number of false positives. The model shows promise in detecting fraud cases, but has a high number of incorrectly classified cases. An end user would need to use this data carefully, and validate the results before taking action. It is comforting to know, as seen below, that the number of fraud cases in general are small, and should be accessed with individual business's data to determining the level of effort that should be spent on this type of technology.
